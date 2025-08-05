@@ -1,0 +1,186 @@
+erDiagram
+    users {
+        int id PK
+        string email UK
+        string password_hash
+        string first_name
+        string last_name
+        string phone
+        date date_of_birth
+        string country
+        string city
+        text address
+        enum role
+        boolean email_verified
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    certification_categories {
+        int id PK
+        string name
+        text description
+        string icon_url
+        boolean is_active
+        timestamp created_at
+    }
+    
+    certifications {
+        int id PK
+        int category_id FK
+        string title
+        text description
+        longtext detailed_description
+        decimal price
+        int duration_hours
+        enum difficulty_level
+        string language
+        enum certificate_type
+        string image_url
+        string syllabus_url
+        text prerequisites
+        text learning_objectives
+        boolean is_active
+        boolean featured
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    instructors {
+        int id PK
+        int user_id FK
+        text bio
+        text qualifications
+        int experience_years
+        text specializations
+        string profile_image_url
+        string linkedin_url
+        boolean is_active
+        timestamp created_at
+    }
+    
+    orders {
+        int id PK
+        int user_id FK
+        string order_number UK
+        decimal total_amount
+        decimal tax_amount
+        decimal discount_amount
+        enum status
+        string payment_method
+        enum payment_status
+        string payment_transaction_id
+        text billing_address
+        text notes
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    order_items {
+        int id PK
+        int order_id FK
+        int certification_id FK
+        int quantity
+        decimal unit_price
+        decimal total_price
+        timestamp created_at
+    }
+    
+    enrollments {
+        int id PK
+        int user_id FK
+        int certification_id FK
+        int order_id FK
+        timestamp enrollment_date
+        date start_date
+        date completion_date
+        decimal progress_percentage
+        enum status
+        boolean certificate_issued
+        string certificate_url
+        decimal final_score
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    appointments {
+        int id PK
+        int user_id FK
+        int certification_id FK
+        int instructor_id FK
+        enum appointment_type
+        string title
+        text description
+        date scheduled_date
+        time scheduled_time
+        int duration_minutes
+        enum status
+        string meeting_url
+        string meeting_platform
+        text notes
+        boolean reminder_sent
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    reviews {
+        int id PK
+        int user_id FK
+        int certification_id FK
+        int rating
+        string title
+        text comment
+        boolean is_verified
+        boolean is_approved
+        timestamp created_at
+        timestamp updated_at
+    }
+    
+    coupons {
+        int id PK
+        string code UK
+        string description
+        enum discount_type
+        decimal discount_value
+        decimal minimum_order_amount
+        int max_uses
+        int current_uses
+        date valid_from
+        date valid_until
+        boolean is_active
+        timestamp created_at
+    }
+    
+    notifications {
+        int id PK
+        int user_id FK
+        enum type
+        string title
+        text message
+        boolean is_read
+        string action_url
+        timestamp created_at
+    }
+    
+    users ||--o{ orders : "places"
+    users ||--o{ enrollments : "enrolls"
+    users ||--o{ appointments : "schedules"
+    users ||--o{ reviews : "writes"
+    users ||--o{ notifications : "receives"
+    users ||--|| instructors : "can be"
+    
+    certification_categories ||--o{ certifications : "contains"
+    
+    certifications ||--o{ order_items : "included in"
+    certifications ||--o{ enrollments : "enrolled in"
+    certifications ||--o{ appointments : "related to"
+    certifications ||--o{ reviews : "reviewed"
+    
+    instructors ||--o{ appointments : "conducts"
+    
+    orders ||--o{ order_items : "contains"
+    orders ||--o{ enrollments : "generates"
+    
+    coupons ||--o{ orders : "applied to"
+

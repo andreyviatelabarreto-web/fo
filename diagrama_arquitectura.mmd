@@ -1,0 +1,43 @@
+graph TB
+    subgraph "Capa de Presentación"
+        A[Frontend React<br/>Catálogo y Compras]
+        B[Panel Admin<br/>Gestión]
+        C[App Móvil<br/>Citas]
+    end
+    
+    subgraph "Capa de API"
+        D[Next.js Backend<br/>API REST]
+        E[Middleware<br/>Auth/Validation]
+    end
+    
+    subgraph "Capa de Datos"
+        F[(Base de Datos<br/>MySQL/PostgreSQL)]
+        G[phpMyAdmin<br/>Gestión BD]
+    end
+    
+    subgraph "Servicios Externos"
+        H[Pasarela de Pago<br/>Stripe/PayPal]
+        I[Servicio Email<br/>Notificaciones]
+        J[Push Notifications<br/>Firebase]
+    end
+    
+    A --> D
+    B --> D
+    C --> D
+    D --> E
+    E --> F
+    G --> F
+    D --> H
+    D --> I
+    C --> J
+    
+    classDef frontend fill:#e1f5fe
+    classDef backend fill:#f3e5f5
+    classDef database fill:#e8f5e8
+    classDef external fill:#fff3e0
+    
+    class A,B,C frontend
+    class D,E backend
+    class F,G database
+    class H,I,J external
+
